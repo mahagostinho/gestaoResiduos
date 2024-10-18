@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '17.0.6'  # Versão do JDK
-        distribution: 'openjdk'  # Usando o AdoptOpenJDK (pode ser openjdk também)
+        distribution: 'temurin'  # Usando o AdoptOpenJDK (pode ser openjdk também)
         java-package: 'jdk'
         architecture: 'x64'
 
