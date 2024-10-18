@@ -1,16 +1,15 @@
 name: CI/CD Pipeline
 
-# Define os eventos que vão disparar o workflow
 on:
   push:
     branches:
-      - main    # Para produção
-      - staging # Para staging
+      - main
+      - staging
   pull_request:
     branches:
       - main
       - staging
-  workflow_dispatch:  # Para executar manualmente
+  workflow_dispatch:
     inputs:
       environment:
         description: 'Choose environment: staging or production'
@@ -24,11 +23,20 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
+      # Instalar a distribuição Temurin do OpenJDK
+      - name: Set up Java with Temurin
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin' 
-          java-version: '17'
+          java-version: '17'   # Versão que você está usando
+          distribution: 'temurin'  # Distribuição Temurin
+
+      # Instalar Maven
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install maven -y
+
+      # Build com Maven
       - name: Build with Maven
         run: mvn clean install
 
@@ -36,6 +44,17 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
     steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      # Instalar Docker e Docker Compose
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker.io -y
+          sudo apt-get install docker-compose -y
+
+      # Deploy para o ambiente Staging
       - name: Deploy to Staging
         run: |
           ENVIRONMENT=staging docker-compose up -d --build
@@ -44,7 +63,17 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      # Instalar Docker e Docker Compose
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker.io -y
+          sudo apt-get install docker-compose -y
+
+      # Deploy para o ambiente Produção
       - name: Deploy to Production
         run: |
           ENVIRONMENT=production docker-compose up -d --build
-
