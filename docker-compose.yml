@@ -1,14 +1,11 @@
 version: '3.8'
-
 services:
   app:
-    build: .
+    image: your-docker-image:latest
     container_name: myapp
-    ports:
-      - "8080:8080"  # Expõe a porta 8080 do contêiner para a máquina host
     environment:
-      - SPRING_PROFILES_ACTIVE=dev  # Define o perfil ativo da aplicação Spring Boot
+      - SPRING_PROFILES_ACTIVE=${ENVIRONMENT}
+    ports:
+      - "8080:8080"
     volumes:
-      - ./target:/app  # Mapeia o diretório "target" local para o contêiner
-    command: ["java", "-jar", "/app/myapp.jar"]  # Comando para iniciar a aplicação
-
+      - ./logs:/app/logs
