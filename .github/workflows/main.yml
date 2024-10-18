@@ -1,51 +1,29 @@
-name: Java CI/CD Pipeline
+name: 03 - Actions
 
 on:
   push:
-    branches:
-      - main  # Aciona o pipeline no push para o branch "main"
-  pull_request:
-    branches:
-      - main  # Aciona o pipeline quando um PR for feito para o branch "main"
+    branches: "feature/**"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Escolhe o Ubuntu mais recente para rodar o pipeline
-
+  checkout_java_docker:
+    runs-on: ubuntu-latest
     steps:
-    # Passo 1: Checkout do código
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Git Checkout
+        uses: actions/checkout@v4
 
-    # Passo 2: Configurar o JDK 17
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17.0.6'  # Versão do JDK
-        #distribution: 'temurin'  # Usando o AdoptOpenJDK (pode ser openjdk também)
-        java-package: 'jdk'
-        architecture: 'x64'
+      - name: Setup Java SDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
-    # Passo 3: Build com Maven
-    - name: Build with Maven
-      run: mvn clean install  # Compila o projeto com Maven
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          push: false
 
-    # Passo 4: Criar a imagem Docker
-    - name: Build Docker image
-      run: docker build -t myapp .
-
-    # Passo 5: Testar a aplicação dentro do Docker
-    - name: Run tests inside Docker container
-      run: docker run myapp mvn test  # Executa os testes dentro do contêiner Docker
-
-    # Passo 6: Deploy para o ambiente de staging
-    - name: Deploy to Staging
-      run: |
-        echo "Deploying to staging environment"
-        # Coloque o comando para realizar o deploy para o staging (como AWS, Azure, etc.)
-
-    # Passo 7: Deploy para o ambiente de produção
-    - name: Deploy to Production
-      run: |
-        echo "Deploying to production environment"
-        # Coloque o comando para realizar o deploy para o ambiente de produção
+      - name: Executar scripts
+        run: |
+          git branch
+          java --version 
+          mvn clean package
