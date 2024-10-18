@@ -2,7 +2,7 @@ name: 03 - Actions
 
 on:
   push:
-    branches: "feature/**"
+    branches: "main/**"
 
 jobs:
   checkout_java_docker:
