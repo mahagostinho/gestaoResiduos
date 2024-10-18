@@ -15,7 +15,7 @@ jobs:
 
     # Etapa 1: Configuração do JDK (com distribution e manual)
     - name: Set up JDK 21
-      uses: actions/setup-java@v2.5.0  # Usando uma versão mais recente
+      uses: actions/setup-java@v2.6.0  # Usando uma versão mais recente
       with:
         java-version: '21'            # Versão do JDK
         distribution: 'openjdk'       # Distribuição do JDK (openjdk, adoptopenjdk, etc.)
