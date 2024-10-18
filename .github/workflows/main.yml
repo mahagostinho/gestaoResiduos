@@ -14,13 +14,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up JDK 21
-  uses: actions/setup-java@v2
-  with:
-    java-version: '21'            # A versão do Java
-     distribution: 'oracle'
-    java-package: 'jdk'            # Pacote JDK, pode ser 'jdk' ou 'jre'
-    architecture: 'x64'            # Arquitetura x64
-    check-latest: false            # Evita checar se há versões mais recentes
+      uses: actions/setup-java@v2
+      with:
+        java-version: '21'            # A versão do JDK
+        distribution: 'oracle'       # Distribuição do JDK (openjdk, adoptopenjdk, zulu, oracle)
+        java-package: 'jdk'           # Pacote JDK (jdk ou jre)
+        architecture: 'x64'           # Arquitetura x64
+        check-latest: false           # Não verifica por versões mais recentes
 
 
     - name: Build with Maven
