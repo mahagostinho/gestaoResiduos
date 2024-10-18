@@ -13,51 +13,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Checar o código
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Passo 2: Configurar o Java 17
-      - name: Set up Java 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '17.0.6'
           distribution: 'temurin'
-      # Passo 3: Instalar Docker
-      - name: Set up Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install docker.io -y
-          sudo systemctl start docker
-          sudo systemctl enable docker
 
-      # Passo 4: Instalar Docker Compose
-      - name: Install Docker Compose
+      - name: Install Docker and Docker Compose
         run: |
+          # Atualizar os repositórios
+          sudo apt-get update
+
+          # Remover qualquer versão existente do Docker
+          sudo apt-get remove docker docker-engine docker.io containerd runc -y
+
+          # Adicionar o repositório oficial do Docker
+          sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+          # Atualizar os repositórios e instalar o Docker
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+
+          # Instalar Docker Compose
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version # Verifica se o Docker Compose foi instalado corretamente
 
-      # Passo 5: Rodar o Maven para gerar o JAR
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
+          # Verificar se o Docker e Docker Compose foram instalados corretamente
+          docker --version
+          docker-compose --version
 
-      # Passo 6: Construir a imagem Docker com Docker Compose
       - name: Build Docker Image
         run: |
           docker-compose -f docker-compose.yml build
 
-      # Passo 7: Rodar os containers Docker em modo detached (em segundo plano)
-      - name: Start Docker Compose
+      - name: Run Docker Containers
         run: |
-          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yml up -d --build
 
-      # Passo 8: Executar os testes dentro do contêiner Docker
-      - name: Run tests inside Docker container
+      - name: Deploy to Staging
         run: |
-          docker-compose exec app mvn test
+          ENVIRONMENT=staging docker-compose -f docker-compose.yml up -d
 
-      # Passo 9: Parar o Docker Compose após os testes
-      - name: Shut down Docker Compose
+      - name: Deploy to Production
         run: |
-          docker-compose down
+          ENVIRONMENT=production docker-compose -f docker-compose.yml up -d
