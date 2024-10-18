@@ -1,3 +1,22 @@
+name: CI/CD Pipeline
+
+# Define os eventos que vão disparar o workflow
+on:
+  push:
+    branches:
+      - main    # Para produção
+      - staging # Para staging
+  pull_request:
+    branches:
+      - main
+      - staging
+  workflow_dispatch:  # Para executar manualmente
+    inputs:
+      environment:
+        description: 'Choose environment: staging or production'
+        required: true
+        default: 'staging'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,3 +47,4 @@ jobs:
       - name: Deploy to Production
         run: |
           ENVIRONMENT=production docker-compose up -d --build
+
