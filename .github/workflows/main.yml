@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-java@v2.6.0  # Usando uma versão mais recente
       with:
         java-version: '21.0.0'            # Versão do JDK
-        distribution: 'openjdk'       # Distribuição do JDK (openjdk, adoptopenjdk, etc.)
+        distribution: 'adoptopenjdk'       # Distribuição do JDK (openjdk, adoptopenjdk, etc.)
         java-package: 'jdk'           # Pacote JDK
         architecture: 'x64'           # Arquitetura x64
         check-latest: false           # Não verifica por versões mais recentes
@@ -46,10 +46,7 @@ jobs:
     - name: Build project with Maven
       run: mvn clean install  # Comando Maven para compilar o projeto
 
-    # Etapa 6: Executar os testes (opcional)
-    - name: Run tests with Maven
-      run: mvn test  # Comando Maven para rodar os testes
-
+  
     # Etapa 7: Deploy (caso seja necessário, configure seu processo de deployment)
     - name: Deploy to Staging
       run: |
