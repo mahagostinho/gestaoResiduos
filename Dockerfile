@@ -1,12 +1,5 @@
-FROM maven:3.2.6-eclipse-temurin-21 AS build
-RUN mkdir /opt/app
-COPY . /opt/app
-WORKDIR /opt/app
-RUN mvn clean package
-FROM eclipse-temurin:21-jre-alpine
-RUN mkdir /opt/app
-COPY --from=build  /opt/app/target/app.jar /opt/app/app.jar
-WORKDIR /opt/app
-ENV PROFILE=prd
-EXPOSE 8080
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "app.jar"]
+FROM openjdk:17-jdk-slim
+COPY target/gestaoResiduos-0.0.1-SNAPSHOT.jar /usr/app/
+WORKDIR /usr/app
+CMD ["java", "-jar", "gestaoResiduos-0.0.1-SNAPSHOT.jar"]
+
