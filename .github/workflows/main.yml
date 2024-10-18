@@ -1,29 +1,26 @@
-name: 03 - Actions
+name: Java CI
 
 on:
   push:
-    branches: "main/**"
+    branches:
+      - main
 
 jobs:
-  checkout_java_docker:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Git Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Setup Java SDK
-        uses: actions/setup-java@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          distribution: 'temurin'  # Utilize a distribuição temurin que é bem suportada
+          java-version: '17'
 
-      - name: Build
-        uses: docker/build-push-action@v6
-        with:
-          push: false
+      - name: Verify Java version
+        run: java -version
 
-      - name: Executar scripts
-        run: |
-          git branch
-          java --version 
-          mvn clean package
+      # Continue with your build steps...
+
