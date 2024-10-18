@@ -17,7 +17,7 @@ jobs:
   uses: actions/setup-java@v2
   with:
     java-version: '21'            # A versão do Java
-    distribution: 'adoptopenjdk'   # Ou use 'openjdk', 'zulu', etc.
+    distribution: 'openjdk'
     java-package: 'jdk'            # Pacote JDK, pode ser 'jdk' ou 'jre'
     architecture: 'x64'            # Arquitetura x64
     check-latest: false            # Evita checar se há versões mais recentes
