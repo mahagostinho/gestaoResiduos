@@ -1,38 +1,51 @@
-name: Java CI with Docker
+name: Java CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main
+      - main  # Aciona o pipeline no push para o branch "main"
+  pull_request:
+    branches:
+      - main  # Aciona o pipeline quando um PR for feito para o branch "main"
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Escolhe o Ubuntu mais recente para rodar o pipeline
 
     steps:
-    # Etapa 1: Checkout do código
+    # Passo 1: Checkout do código
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Etapa 2: Configuração do JDK
+    # Passo 2: Configurar o JDK 17
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '17.0.6'
-        distribution: 'openjdk'
+        java-version: '17.0.6'  # Versão do JDK
+        distribution: 'openjdk'  # Usando o AdoptOpenJDK (pode ser openjdk também)
         java-package: 'jdk'
         architecture: 'x64'
 
-    # Etapa 3: Build do projeto com Maven
-    - name: Build project with Maven
-      run: mvn clean install
+    # Passo 3: Build com Maven
+    - name: Build with Maven
+      run: mvn clean install  # Compila o projeto com Maven
 
-    # Etapa 4: Build da imagem Docker
+    # Passo 4: Criar a imagem Docker
     - name: Build Docker image
-      run: docker-compose build
+      run: docker build -t myapp .
 
-    # Etapa 5: Subir a imagem para o Docker Hub (ou GitHub Container Registry)
-    - name: Push Docker image
+    # Passo 5: Testar a aplicação dentro do Docker
+    - name: Run tests inside Docker container
+      run: docker run myapp mvn test  # Executa os testes dentro do contêiner Docker
+
+    # Passo 6: Deploy para o ambiente de staging
+    - name: Deploy to Staging
       run: |
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker-compose push
+        echo "Deploying to staging environment"
+        # Coloque o comando para realizar o deploy para o staging (como AWS, Azure, etc.)
+
+    # Passo 7: Deploy para o ambiente de produção
+    - name: Deploy to Production
+      run: |
+        echo "Deploying to production environment"
+        # Coloque o comando para realizar o deploy para o ambiente de produção
