@@ -2,8 +2,14 @@ version: '3.8'
 services:
   app:
     image: your-docker-image:latest
-    container_name: myapp
+    container_name: your-app
     environment:
+      # Variáveis comuns
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - APP_PORT=${APP_PORT}
+      
+      # Variável específica do ambiente (Staging ou Produção)
       - SPRING_PROFILES_ACTIVE=${ENVIRONMENT}
     ports:
       - "8080:8080"
