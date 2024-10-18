@@ -17,7 +17,7 @@ jobs:
     - name: Set up JDK 21
       uses: actions/setup-java@v2.6.0  # Usando uma versão mais recente
       with:
-        java-version: '21'            # Versão do JDK
+        java-version: '21.0.0'            # Versão do JDK
         distribution: 'openjdk'       # Distribuição do JDK (openjdk, adoptopenjdk, etc.)
         java-package: 'jdk'           # Pacote JDK
         architecture: 'x64'           # Arquitetura x64
