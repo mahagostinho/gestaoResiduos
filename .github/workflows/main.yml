@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-java@v3  # Usando a versão mais recente do setup-java
       with:
         java-version: '17'          # Especifica a versão do Java (17)
-        distribution: 'adoptopenjdk'  # Usando o adoptopenjdk (ou openjdk)
+        distribution: 'openjdk'     # Usando o adoptopenjdk (ou openjdk)
         java-package: 'jdk'         # Pacote JDK
         architecture: 'x64'         # Arquitetura 64-bit
         check-latest: false         # Não verificar por versões mais recentes
