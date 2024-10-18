@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '21'            # A versão do JDK
-        distribution: 'oracle'       # Distribuição do JDK (openjdk, adoptopenjdk, zulu, oracle)
+        distribution: 'zulu'       # Distribuição do JDK (openjdk, adoptopenjdk, zulu, oracle)
         java-package: 'jdk'           # Pacote JDK (jdk ou jre)
         architecture: 'x64'           # Arquitetura x64
         check-latest: false           # Não verifica por versões mais recentes
