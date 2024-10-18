@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI with Docker
 
 on:
   push:
@@ -7,51 +7,32 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Ambiente de execução, você pode escolher ubuntu-latest ou outros
+    runs-on: ubuntu-latest
 
     steps:
+    # Etapa 1: Checkout do código
     - name: Checkout code
-      uses: actions/checkout@v2  # Faz o checkout do código do repositório
+      uses: actions/checkout@v2
 
-   # Etapa 2: Configuração do JDK
+    # Etapa 2: Configuração do JDK
     - name: Set up JDK 17
-      uses: actions/setup-java@v3  # Usando a versão mais recente do setup-java
+      uses: actions/setup-java@v3
       with:
-        java-version: '17'          # Especifica a versão do Java (17)
-        distribution: 'openjdk'     # Usando o adoptopenjdk (ou openjdk)
-        java-package: 'jdk'         # Pacote JDK
-        architecture: 'x64'         # Arquitetura 64-bit
-        check-latest: false         # Não verificar por versões mais recentes
+        java-version: '17'
+        distribution: 'adoptopenjdk'
+        java-package: 'jdk'
+        architecture: 'x64'
 
-    # Etapa 2: Instalar manualmente o JDK (caso a configuração não funcione)
-    - name: Install JDK 21 (manual installation)
-      run: |
-        sudo apt update
-        sudo apt install -y openjdk-21-jdk
-        java -version  # Verificar se a instalação foi bem-sucedida
-
-    # Etapa 3: Limpeza de cache (opcional, mas recomendado para evitar problemas)
-    - name: Clean cache
-      run: |
-        sudo rm -rf ~/.m2/repository  # Limpa o cache do Maven
-        sudo rm -rf ~/.gradle         # Limpa o cache do Gradle
-
-    # Etapa 4: Verificar dependências (opcional)
-    - name: Verify dependencies
-      run: |
-        mvn clean install             # Use seu gerenciador de dependências (Maven/Gradle)
-        # Caso esteja usando Gradle, substitua com: gradle clean build
-
-    # Etapa 5: Build do projeto
+    # Etapa 3: Build do projeto com Maven
     - name: Build project with Maven
-      run: mvn clean install  # Comando Maven para compilar o projeto
+      run: mvn clean install
 
-  
-    # Etapa 7: Deploy (caso seja necessário, configure seu processo de deployment)
-    - name: Deploy to Staging
-      run: |
-        echo "Deploying to staging environment..."  # Substitua com seu processo de deploy real
+    # Etapa 4: Build da imagem Docker
+    - name: Build Docker image
+      run: docker-compose build
 
-    - name: Deploy to Production
+    # Etapa 5: Subir a imagem para o Docker Hub (ou GitHub Container Registry)
+    - name: Push Docker image
       run: |
-        echo "Deploying to production environment..."  # Substitua com seu processo de deploy real
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker-compose push
