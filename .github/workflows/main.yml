@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Ou a branch que você usa para produção
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Build Docker image
+      run: docker build -t nome-da-imagem .
+
+    - name: Push Docker image
+      run: docker push nome-da-imagem
+
+    - name: Deploy to Staging
+      run: |
+        # Comandos para fazer o deploy no ambiente de staging
+        docker run -d -p 8080:8080 nome-da-imagem
+
+    - name: Deploy to Production
+      run: |
+        # Comandos para fazer o deploy no ambiente de produção
+        docker run -d -p 8080:8080 nome-da-imagem
