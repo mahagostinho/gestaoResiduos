@@ -9,19 +9,13 @@ import java.util.Objects;
 public class Recipiente {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "SEQ_RECIPIENTE"
-    )
-    @SequenceGenerator(
-            name = "SEQ_RECIPIENTE",
-            sequenceName = "SEQ_RECIPIENTE",
-            allocationSize = 50
+            strategy = GenerationType.SEQUENCE
     )
     @Column(name = "recipiente_id")
     private Long recipienteId;
-    @Column(name = "volume_atual_litros")
+    @Column(name = "volume_atual_litros", precision = 2)
     private Double volumeAtualLitros;
-    @Column(name = "volume_total_litros")
+    @Column(name = "volume_total_litros", precision = 2)
     private Double volumeTotalLitros;
     private String status;
 

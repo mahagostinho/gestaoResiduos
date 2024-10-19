@@ -11,18 +11,12 @@ public class Caminhao {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "SEQ_CAMINHAO"
-    )
-    @SequenceGenerator(
-        name = "SEQ_CAMINHAO",
-        sequenceName = "SEQ_CAMINHAO",
-        allocationSize = 50
+        strategy = GenerationType.SEQUENCE
     )
     @Column(name = "caminhao_id")
     private Long caminhaoId;
     private String modelo;
-    @Column(name = "capacidade_maxima_litros")
+    @Column(name = "capacidade_maxima_litros", precision = 2)
     private Double capacidadeMaximaLitros;
     private Boolean status;
 
