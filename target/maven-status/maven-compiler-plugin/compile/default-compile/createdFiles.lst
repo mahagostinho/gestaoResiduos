@@ -1,0 +1,13 @@
+br\com\fiap\gestaoResiduos\controller\RecipienteController.class
+br\com\fiap\gestaoResiduos\controller\CaminhaoController.class
+br\com\fiap\gestaoResiduos\repository\CaminhaoRepository.class
+br\com\fiap\gestaoResiduos\service\RecipienteService.class
+br\com\fiap\gestaoResiduos\dto\RecipienteCadastroDTO.class
+br\com\fiap\gestaoResiduos\model\Caminhao.class
+br\com\fiap\gestaoResiduos\repository\RecipienteRepository.class
+br\com\fiap\gestaoResiduos\dto\CaminhaoCadastroDTO.class
+br\com\fiap\gestaoResiduos\dto\CaminhaoExibicaoDTO.class
+br\com\fiap\gestaoResiduos\dto\RecipienteExibicaoDTO.class
+br\com\fiap\gestaoResiduos\model\Recipiente.class
+br\com\fiap\gestaoResiduos\service\CaminhaoService.class
+br\com\fiap\gestaoResiduos\GestaoResiduosApplication.class
